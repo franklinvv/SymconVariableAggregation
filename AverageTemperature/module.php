@@ -58,12 +58,16 @@
 
 		private function calculateAverageTemperature() {
 			$averageTemperature = 0.0;
+			$totalWeight = 0;
 
 			$temperatureVariables = $this->getRegisteredTemperatureVariables();
 			foreach($temperatureVariables as $temperatureVariable) {
 				$temperature = GetValueFloat($temperatureVariable->VariableID);
-				$averageTemperature += $temperature * ($temperatureVariable->Weight/100.0);
+				$averageTemperature += ($temperature * $temperatureVariable->Weight);
+				$totalWeight += $temperatureVariable->Weight;
 			}
+
+			$averageTemperature /= $totalWeight;
 
 			return $averageTemperature;
 		}
