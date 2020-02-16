@@ -1,0 +1,12 @@
+{
+    "id": "{D836C199-2CB7-10DF-8678-23C8F702ACD6}",
+    "name": "AverageTemperature",
+    "type": 3,
+    "vendor": "Franklin van Velthuizen",
+    "aliases": [],
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "AT",
+    "url": "https://www.yoki.org/"
+}

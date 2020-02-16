@@ -1,0 +1,40 @@
+{
+    "elements": [
+        {
+            "type": "List",
+            "name": "TemperatureVariables",
+            "caption": "Temperature Variables",
+            "rowCount": 5,
+            "add": true,
+            "delete": true,
+            "sort": {
+                "column": "VariableID",
+                "direction": "ascending"
+            },
+            "columns": [
+                {
+                    "caption": "Variable",
+                    "name": "VariableID",
+                    "width": "auto",
+                    "add": 0,
+                    "edit": {
+                        "type": "SelectVariable"
+                    },
+                    "save": false
+                },
+                {
+                    "caption": "Weight",
+                    "name": "Weight",
+                    "width": "100px",
+                    "add": 0,
+                    "edit": {
+                        "type": "NumberSpinner",
+                        "suffix": "%"
+                    },
+                    "save": false
+                }
+            ],
+            "values": []
+        }
+    ]
+}
