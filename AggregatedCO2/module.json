@@ -1,0 +1,12 @@
+{
+    "id": "{3753E91B-F145-CDF0-7CF4-32FBF83B05A1}",
+    "name": "AggregatedCO2",
+    "type": 3,
+    "vendor": "Franklin van Velthuizen",
+    "aliases": [],
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "AC",
+    "url": "https://www.yoki.org/"
+}

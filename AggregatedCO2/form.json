@@ -1,0 +1,29 @@
+{
+    "elements": [
+        {
+            "type": "List",
+            "name": "CO2Variables",
+            "caption": "CO₂ Variables",
+            "rowCount": 5,
+            "add": true,
+            "delete": true,
+            "sort": {
+                "column": "VariableID",
+                "direction": "ascending"
+            },
+            "columns": [
+                {
+                    "caption": "Variable",
+                    "name": "VariableID",
+                    "width": "auto",
+                    "add": 0,
+                    "edit": {
+                        "type": "SelectVariable"
+                    },
+                    "save": false
+                }
+            ],
+            "values": []
+        }
+    ]
+}
