@@ -21,7 +21,7 @@
 			parent::ApplyChanges();
 
 			$ident = "CO2";
-			$this->RegisterVariableInteger($ident, $ident, "Netatmo.CO2", 0);
+			$this->RegisterVariableInteger($ident, "CO₂", "Netatmo.CO2", 0);
 
 			$variables = $this->getRegisteredVariables();
 
