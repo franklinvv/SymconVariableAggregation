@@ -23,23 +23,23 @@
 			$ident = "Average";
 			$this->RegisterVariableFloat($ident, $ident);
 
-			$temperatureVariables = $this->getRegisteredTemperatureVariables();
+			$variables = $this->getRegisteredVariables();
 
-			if($temperatureVariables != NULL) {
-				foreach($temperatureVariables as $temperatureVariable) {
-					//IPS_LogMessage("Averaging", $temperatureVariable["VariableID"]);
-					$this->RegisterMessage($temperatureVariable->VariableID, VM_UPDATE);
+			if($variables != NULL) {
+				foreach($variables as $variable) {
+					//IPS_LogMessage("Averaging", $variable["VariableID"]);
+					$this->RegisterMessage($variable->VariableID, VM_UPDATE);
 				}
 			}
 		}
 
 		public function MessageSink($timestamp, $senderId, $message, $data) {
-			$temperatureVariables = $this->getRegisteredTemperatureVariables();
-			if($temperatureVariables == NULL) return;
+			$variables = $this->getRegisteredVariables();
+			if($variables == NULL) return;
 
 			$variableIsValid = false;
-			foreach($temperatureVariables as $temperatureVariable) {
-				if($temperatureVariable->VariableID == $senderId) {
+			foreach($variables as $variable) {
+				if($variable->VariableID == $senderId) {
 					$variableIsValid = true;
 					break;
 				}
@@ -51,37 +51,37 @@
 				return;
 			}
 
-			$averageTemperature = $this->calculateAverageTemperature();
-			$this->SetValue("Average", $averageTemperature);
+			$averageValue = $this->calculateAverageValue();
+			$this->SetValue("Average", $averageValue);
 			//IPS_LogMessage("Averaging", "Message from SenderID ".$senderId." with Message ".$message."\r\n Data: ".print_r($data, true));
 		}
 
-		private function calculateAverageTemperature() {
-			$averageTemperature = 0.0;
+		private function calculateAverageValue() {
+			$averageValue = 0.0;
 			$totalWeight = 0;
 			$maxAge = 6; //hours
-			$temperatureVariables = $this->getRegisteredTemperatureVariables();
-			foreach($temperatureVariables as $temperatureVariable) {
-				$varInfo = IPS_GetVariable($temperatureVariable->VariableID);
+			$variables = $this->getRegisteredVariables();
+			foreach($variables as $variable) {
+				$varInfo = IPS_GetVariable($variable->VariableID);
 				if(time() - $varInfo["VariableUpdated"] > 60*60*$maxAge) {
-					IPS_LogMessage("AverageValue", sprintf("Skipping %d due to age (last updated at %s, older than %d hours)", $temperatureVariable->VariableID, date("H:i:s", $varInfo["VariableUpdated"]), $maxAge));
+					IPS_LogMessage("AverageValue", sprintf("Skipping %d due to age (last updated at %s, older than %d hours)", $variable->VariableID, date("H:i:s", $varInfo["VariableUpdated"]), $maxAge));
 					continue;
 				}
-				$temperature = GetValueFloat($temperatureVariable->VariableID);
-				$averageTemperature += ($temperature * $temperatureVariable->Weight);
-				$totalWeight += $temperatureVariable->Weight;
+				$value = GetValueFloat($variable->VariableID);
+				$averageValue += ($value * $variable->Weight);
+				$totalWeight += $variable->Weight;
 			}
-			if($averageTemperature == 0) {
+			if($averageValue == 0) {
 				return 0;
 			}
 
-			$averageTemperature /= $totalWeight;
-			return $averageTemperature;
+			$averageValue /= $totalWeight;
+			return $averageValue;
 		}
 
-		private function getRegisteredTemperatureVariables() {
-			$temperatureVariablesJson = $this->ReadPropertyString("Variables");
-			$result = json_decode($temperatureVariablesJson);
+		private function getRegisteredVariables() {
+			$variablesJson = $this->ReadPropertyString("Variables");
+			$result = json_decode($variablesJson);
 			return (json_last_error() == JSON_ERROR_NONE) ? $result : NULL;
 		}
 
