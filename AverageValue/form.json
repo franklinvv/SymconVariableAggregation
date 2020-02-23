@@ -2,9 +2,8 @@
     "elements": [
         {
             "type": "List",
-            "name": "TemperatureVariables",
-            "caption": "Temperature Variables",
-            "rowCount": 5,
+            "name": "Variables",
+            "caption": "Variables",
             "add": true,
             "delete": true,
             "sort": {

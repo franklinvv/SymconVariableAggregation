@@ -1,12 +1,12 @@
 <?php
-	class AggregatedCO2 extends IPSModule {
+	class MaxValue extends IPSModule {
 
 		public function Create()
 		{
 			//Never delete this line!
 			parent::Create();
 
-			$this->RegisterPropertyString("CO2Variables", "");
+			$this->RegisterPropertyString("Variables", "");
 		}
 
 		public function Destroy()
@@ -20,14 +20,14 @@
 			//Never delete this line!
 			parent::ApplyChanges();
 
-			$ident = "CO2";
-			$this->RegisterVariableInteger($ident, "CO₂", "Netatmo.CO2", 0);
+			$ident = "Max";
+			$this->RegisterVariableInteger($ident, $ident);
 
 			$variables = $this->getRegisteredVariables();
 
 			if($variables != NULL) {
 				foreach($variables as $variable) {
-					IPS_LogMessage("AggregateCO2", sprintf("Registering to %d", $variable->VariableID));
+					IPS_LogMessage("MaxValue", sprintf("Registering to %d", $variable->VariableID));
 					$this->RegisterMessage($variable->VariableID, VM_UPDATE);
 				}
 			}
@@ -47,13 +47,13 @@
 
 			if(!$variableIsValid) {
 				$this->UnregisterMessage($senderId, VM_UPDATE);
-				IPS_LogMessage("Aggregate", sprintf("Unregistered from sender %d", $senderId));
+				IPS_LogMessage("MaxValue", sprintf("Unregistered from sender %d", $senderId));
 				return;
 			}
 
 			$maxValue = $this->calculateMaxValue();
-			$this->SetValue("CO2", $maxValue);
-			IPS_LogMessage("AggregateCO2", "Message from SenderID ".$senderId." with Message ".$message."\r\n Data: ".print_r($data, true));
+			$this->SetValue("Max", $maxValue);
+			IPS_LogMessage("MaxValue", "Message from SenderID ".$senderId." with Message ".$message."\r\n Data: ".print_r($data, true));
 		}
 
 		private function calculateMaxValue() {
@@ -94,7 +94,7 @@
 		// }
 
 		private function getRegisteredVariables() {
-			$variablesJson = $this->ReadPropertyString("CO2Variables");
+			$variablesJson = $this->ReadPropertyString("Variables");
 			$result = json_decode($variablesJson);
 			return (json_last_error() == JSON_ERROR_NONE) ? $result : NULL;
 		}

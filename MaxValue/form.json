@@ -2,9 +2,8 @@
     "elements": [
         {
             "type": "List",
-            "name": "CO2Variables",
-            "caption": "CO₂ Variables",
-            "rowCount": 5,
+            "name": "Variables",
+            "caption": "Variables",
             "add": true,
             "delete": true,
             "sort": {

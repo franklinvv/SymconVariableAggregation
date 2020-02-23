@@ -1,12 +1,12 @@
 <?php
-	class AverageTemperature extends IPSModule {
+	class AverageValue extends IPSModule {
 
 		public function Create()
 		{
 			//Never delete this line!
 			parent::Create();
 
-			$this->RegisterPropertyString("TemperatureVariables", "");
+			$this->RegisterPropertyString("Variables", "");
 		}
 
 		public function Destroy()
@@ -20,8 +20,8 @@
 			//Never delete this line!
 			parent::ApplyChanges();
 
-			$ident = "Temperature";
-			$this->RegisterVariableFloat($ident, $ident, "~Temperature", 1);
+			$ident = "Average";
+			$this->RegisterVariableFloat($ident, $ident);
 
 			$temperatureVariables = $this->getRegisteredTemperatureVariables();
 
@@ -47,12 +47,12 @@
 
 			if(!$variableIsValid) {
 				$this->UnregisterMessage($senderId, VM_UPDATE);
-				IPS_LogMessage("Averaging", sprintf("Unregistered from sender %d", $senderId));
+				IPS_LogMessage("AverageValue", sprintf("Unregistered from sender %d", $senderId));
 				return;
 			}
 
 			$averageTemperature = $this->calculateAverageTemperature();
-			$this->SetValue("Temperature", $averageTemperature);
+			$this->SetValue("Average", $averageTemperature);
 			//IPS_LogMessage("Averaging", "Message from SenderID ".$senderId." with Message ".$message."\r\n Data: ".print_r($data, true));
 		}
 
@@ -64,7 +64,7 @@
 			foreach($temperatureVariables as $temperatureVariable) {
 				$varInfo = IPS_GetVariable($temperatureVariable->VariableID);
 				if(time() - $varInfo["VariableUpdated"] > 60*60*$maxAge) {
-					IPS_LogMessage("Averaging", sprintf("Skipping %d due to age (last updated at %s, older than %d hours)", $temperatureVariable->VariableID, date("H:i:s", $varInfo["VariableUpdated"]), $maxAge));
+					IPS_LogMessage("AverageValue", sprintf("Skipping %d due to age (last updated at %s, older than %d hours)", $temperatureVariable->VariableID, date("H:i:s", $varInfo["VariableUpdated"]), $maxAge));
 					continue;
 				}
 				$temperature = GetValueFloat($temperatureVariable->VariableID);
@@ -80,7 +80,7 @@
 		}
 
 		private function getRegisteredTemperatureVariables() {
-			$temperatureVariablesJson = $this->ReadPropertyString("TemperatureVariables");
+			$temperatureVariablesJson = $this->ReadPropertyString("Variables");
 			$result = json_decode($temperatureVariablesJson);
 			return (json_last_error() == JSON_ERROR_NONE) ? $result : NULL;
 		}

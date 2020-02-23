@@ -1,7 +1,7 @@
 {
     "id": "{DEB96C1E-76E0-8838-7868-1B4C3EDC9FA9}",
     "author": "Franklin van Velthuizen",
-    "name": "Averaging",
+    "name": "VariableAggregation",
     "url": "https://www.yoki.org/",
     "compatibility": {
         "version": "5.0"
